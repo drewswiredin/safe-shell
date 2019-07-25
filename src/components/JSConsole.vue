@@ -23,7 +23,7 @@
         </v-flex>
         <v-flex xs12 md6>
           <v-textarea
-            filled
+            box
             name="result-view"
             label="Result"
             v-model="result"
@@ -83,7 +83,7 @@ function add(val1, val2) {
 var inputs = [10, 20]
 
 return add(...inputs) // ES6!!!`,
-      commander: new Commander(50000),
+      commander: new Commander(500),
       cmOptions: {
         tabSize: 2, 
         electricChars: true,
