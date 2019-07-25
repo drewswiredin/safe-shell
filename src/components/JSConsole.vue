@@ -26,7 +26,7 @@
 
 import Commander from 'safe-run';
 import Vue from 'vue'
-import 'vuetify/dist/vuetify.min.css'
+
 
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/addon/selection/active-line.js'
@@ -59,7 +59,15 @@ export default {
         }],
       inputs: [{name: 'arg1', value: 100}],
       result: "",
-      code: "return moment().format('dddd MMMM D, YYYY')",
+      code: `//return moment().format('dddd MMMM D, YYYY') // External Library!!!
+
+function add(val1, val2) {
+  return val1 + val2
+} 
+
+var inputs = [10, 20]
+
+return add(...inputs) // ES6!!!`,
       commander: new Commander(50000),
       cmOptions: {
         tabSize: 2, 
@@ -79,7 +87,7 @@ export default {
   },
   methods: {
     async test() { 
-      await this.commander.run(['https://momentjs.com/downloads/moment.js'], this.code, ["arg1"], [this.input])
+      await this.commander.run(['https://momentjs.com/downloads/moment.js'], this.code, ["arg1"], [100])
       .then((result) => {
         this.result = result
       })
