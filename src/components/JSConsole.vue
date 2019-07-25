@@ -1,12 +1,13 @@
 <template>
     <v-container grid-list-md>
+      <h1>JSConsole</h1>
       <v-layout row wrap>
         <v-flex xs12>
-
+          <h3>Parameters</h3>
           <v-data-table
             :headers="headers"
             :items="inputs"
-            
+            hide-actions
           >
             <template v-slot:items="props">
               <td>{{ props.item.name }}</td>
@@ -14,10 +15,21 @@
             </template>
           </v-data-table>
 
+          <h3>Body</h3>
+          <br>
           <codemirror v-model="code" :options="cmOptions"></codemirror>
-          <button @click="test">TEST</button>
-          <textarea disabled v-model="result"></textarea> 
+          <v-btn @click="run">RUN</v-btn>
+
         </v-flex>
+        <v-flex xs12 md6>
+          <v-textarea
+            filled
+            name="result-view"
+            label="Result"
+            v-model="result"
+            
+          ></v-textarea>
+      </v-flex>
       </v-layout>
     </v-container>
 </template>
@@ -58,8 +70,11 @@ export default {
           value: 'value'
         }],
       inputs: [{name: 'arg1', value: 100}],
+      libraryUrls: ['https://momentjs.com/downloads/moment.js'],
       result: "",
-      code: `//return moment().format('dddd MMMM D, YYYY') // External Library!!!
+      code: `//return arg1 // Arguments!!!
+
+//return moment().format('dddd MMMM D, YYYY') // External Library!!!
 
 function add(val1, val2) {
   return val1 + val2
@@ -86,8 +101,8 @@ return add(...inputs) // ES6!!!`,
     }
   },
   methods: {
-    async test() { 
-      await this.commander.run(['https://momentjs.com/downloads/moment.js'], this.code, ["arg1"], [100])
+    async run() { 
+      await this.commander.run(this.libraryUrls, this.code, this.inputs.map(i => i.name), this.inputs.map(i => i.value))
       .then((result) => {
         this.result = result
       })
